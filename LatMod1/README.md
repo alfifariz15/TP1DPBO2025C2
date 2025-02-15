@@ -1,4 +1,4 @@
-# TP1DPBO2025C2
+# LatMod1DPBO2025C2
 
-Saya Muhammad Alfi Fariz dengan NIM 2311174 mengerjakan TP 1 dalam mata kuliah Desain Pemrograman Berorientasi Objek
+Saya Muhammad Alfi Fariz dengan NIM 2311174 mengerjakan Latihan Modul 1 dalam mata kuliah Desain Pemrograman Berorientasi Objek
 untuk keberkahanNya maka saya tidak melakukan kecurangan seperti yang telah dispesifikasikan. Aamiin.
