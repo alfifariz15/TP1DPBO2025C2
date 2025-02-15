@@ -1,5 +1,4 @@
 #include <iostream>
-#include <vector>
 #include <string>
 #include <algorithm>
 #include <limits>
@@ -8,142 +7,169 @@ using namespace std;
 
 class PetShop {
 private:
-    // Struct untuk menyimpan data produk
-    struct Product {
-    private:
-        int id;          // ID produk
-        string name;     // Nama produk
-        string category; // Kategori produk
-        double price;    // Harga produk
-
-    public:
-        // Constructor untuk inisialisasi produk
-        Product(int id, const string& name, const string& category, double price)
-            : id(id), name(name), category(category), price(price) {}
-
-        // Getter untuk mendapatkan ID produk
-        int getId() const {
-            return id;
-        }
-
-        // Setter untuk mengubah ID produk
-        void setId(int newId) {
-            id = newId;
-        }
-
-        // Getter untuk mendapatkan nama produk
-        string getName() const {
-            return name;
-        }
-
-        // Setter untuk mengubah nama produk
-        void setName(const string& newName) {
-            name = newName;
-        }
-
-        // Getter untuk mendapatkan kategori produk
-        string getCategory() const {
-            return category;
-        }
-
-        // Setter untuk mengubah kategori produk
-        void setCategory(const string& newCategory) {
-            category = newCategory;
-        }
-
-        // Getter untuk mendapatkan harga produk
-        double getPrice() const {
-            return price;
-        }
-
-        // Setter untuk mengubah harga produk
-        void setPrice(double newPrice) {
-            price = newPrice;
-        }
-    };
-
-    vector<Product> products; // Vector untuk menyimpan daftar produk
+    // Atribut untuk menyimpan data produk
+    static const int MAX_PRODUCTS = 100; // Batas maksimum produk
+    int ids[MAX_PRODUCTS];          // Array untuk ID produk
+    string names[MAX_PRODUCTS];     // Array untuk nama produk
+    string categories[MAX_PRODUCTS]; // Array untuk kategori produk
+    double prices[MAX_PRODUCTS];    // Array untuk harga produk
     int nextId; // Variabel untuk menghasilkan ID otomatis
+    int productCount; // Jumlah produk yang tersimpan
 
 public:
     // Constructor untuk inisialisasi PetShop
-    PetShop() : nextId(1) {
+    PetShop() : nextId(1), productCount(0) {
         cout << "PetShop dibuat.\n";
+    }
+    
+    // Destructor untuk membersihkan resource
+    ~PetShop() {
+        cout << "PetShop dihapus.\n";
+    }
+
+    // Getter dan Setter untuk ID produk
+    int getId(int index) const {
+        if (index >= 0 && index < productCount) {
+            return ids[index];
+        }
+        return -1; // Mengembalikan -1 jika index tidak valid
+    }
+
+    void setId(int index, int newId) {
+        if (index >= 0 && index < productCount) {
+            ids[index] = newId;
+        }
+    }
+
+    // Getter dan Setter untuk nama produk
+    string getName(int index) const {
+        if (index >= 0 && index < productCount) {
+            return names[index];
+        }
+        return ""; // Mengembalikan string kosong jika index tidak valid
+    }
+
+    void setName(int index, const string& newName) {
+        if (index >= 0 && index < productCount) {
+            names[index] = newName;
+        }
+    }
+
+    // Getter dan Setter untuk kategori produk
+    string getCategory(int index) const {
+        if (index >= 0 && index < productCount) {
+            return categories[index];
+        }
+        return ""; // Mengembalikan string kosong jika index tidak valid
+    }
+
+    void setCategory(int index, const string& newCategory) {
+        if (index >= 0 && index < productCount) {
+            categories[index] = newCategory;
+        }
+    }
+
+    // Getter dan Setter untuk harga produk
+    double getPrice(int index) const {
+        if (index >= 0 && index < productCount) {
+            return prices[index];
+        }
+        return -1.0; // Mengembalikan -1.0 jika index tidak valid
+    }
+
+    void setPrice(int index, double newPrice) {
+        if (index >= 0 && index < productCount) {
+            prices[index] = newPrice;
+        }
     }
 
     // Method untuk menampilkan semua produk
-    void displayProducts() {
-        if (products.empty()) {
+    void displayProducts() const {
+        if (productCount == 0) {
             cout << "Tidak ada produk yang tersedia.\n";
             return;
         }
 
         cout << "Daftar Produk:\n";
-        for (const auto& product : products) {
-            cout << "ID: " << product.getId() << ", Nama: " << product.getName()
-                 << ", Kategori: " << product.getCategory() << ", Harga: Rp" << product.getPrice() << "\n";
+        for (int i = 0; i < productCount; i++) {
+            cout << "ID: " << ids[i] << ", Nama: " << names[i]
+                 << ", Kategori: " << categories[i] << ", Harga: Rp" << prices[i] << "\n";
         }
     }
 
     // Method untuk menambahkan produk baru
     void addProduct(const string& name, const string& category, double price) {
-        // Membuat objek produk baru dengan ID otomatis
-        Product newProduct(nextId++, name, category, price);
-        // Menambahkan produk ke dalam vector
-        products.push_back(newProduct);
+        if (productCount >= MAX_PRODUCTS) {
+            cout << "Kapasitas produk penuh. Tidak bisa menambahkan produk baru.\n";
+            return;
+        }
+
+        // Menambahkan produk ke dalam array
+        ids[productCount] = nextId++;
+        names[productCount] = name;
+        categories[productCount] = category;
+        prices[productCount] = price;
+        productCount++;
+
         cout << "Produk berhasil ditambahkan.\n";
     }
 
     // Method untuk mengupdate produk berdasarkan ID
     void updateProduct(int id, const string& name, const string& category, double price) {
-        // Mencari produk berdasarkan ID
-        auto it = find_if(products.begin(), products.end(), [id](const Product& p) {
-            return p.getId() == id;
-        });
+        bool found = false;
+        for (int i = 0; i < productCount; i++) {
+            if (ids[i] == id) {
+                // Jika produk ditemukan, update data produk
+                names[i] = name;
+                categories[i] = category;
+                prices[i] = price;
+                found = true;
+                cout << "Produk berhasil diupdate.\n";
+                break;
+            }
+        }
 
-        if (it != products.end()) {
-            // Jika produk ditemukan, update data produk
-            it->setName(name);
-            it->setCategory(category);
-            it->setPrice(price);
-            cout << "Produk berhasil diupdate.\n";
-        } else {
-            // Jika produk tidak ditemukan, tampilkan pesan error
+        if (!found) {
             cout << "Produk dengan ID " << id << " tidak ditemukan.\n";
         }
     }
 
     // Method untuk menghapus produk berdasarkan ID
     void deleteProduct(int id) {
-        // Mencari produk berdasarkan ID
-        auto it = find_if(products.begin(), products.end(), [id](const Product& p) {
-            return p.getId() == id;
-        });
+        bool found = false;
+        for (int i = 0; i < productCount; i++) {
+            if (ids[i] == id) {
+                // Geser semua elemen setelahnya ke kiri
+                for (int j = i; j < productCount - 1; j++) {
+                    ids[j] = ids[j + 1];
+                    names[j] = names[j + 1];
+                    categories[j] = categories[j + 1];
+                    prices[j] = prices[j + 1];
+                }
+                productCount--;
+                found = true;
+                cout << "Produk berhasil dihapus.\n";
+                break;
+            }
+        }
 
-        if (it != products.end()) {
-            // Jika produk ditemukan, hapus produk dari vector
-            products.erase(it);
-            cout << "Produk berhasil dihapus.\n";
-        } else {
-            // Jika produk tidak ditemukan, tampilkan pesan error
+        if (!found) {
             cout << "Produk dengan ID " << id << " tidak ditemukan.\n";
         }
     }
 
     // Method untuk mencari produk berdasarkan nama
-    void searchProductByName(const string& name) {
+    void searchProductByName(const string& name) const {
         bool found = false;
-        // Iterasi melalui semua produk untuk mencari yang sesuai dengan nama
-        for (const auto& product : products) {
-            if (product.getName() == name) {
-                cout << "Produk ditemukan: ID: " << product.getId() << ", Nama: " << product.getName()
-                     << ", Kategori: " << product.getCategory() << ", Harga: Rp" << product.getPrice() << "\n";
+        for (int i = 0; i < productCount; i++) {
+            if (names[i] == name) {
+                cout << "Produk ditemukan: ID: " << ids[i] << ", Nama: " << names[i]
+                     << ", Kategori: " << categories[i] << ", Harga: Rp" << prices[i] << "\n";
                 found = true;
             }
         }
 
         if (!found) {
-            // Jika produk tidak ditemukan, tampilkan pesan error
             cout << "Produk dengan nama " << name << " tidak ditemukan.\n";
         }
     }
