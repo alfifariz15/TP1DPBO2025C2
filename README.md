@@ -9,7 +9,9 @@ untuk keberkahanNya maka saya tidak melakukan kecurangan seperti yang telah disp
 ![image](https://github.com/user-attachments/assets/775b3c75-340c-476f-9e77-7d18ddd3972b)
 
 # Dokumentasi TP 1 buat java dan python sama hasil nya seperti ini
-https://github.com/user-attachments/assets/527bc221-0b1d-47d1-b13f-e8d40318fa46
+
+https://github.com/user-attachments/assets/e9c9995d-92d4-472f-ab9a-64cc110d75ab
+
 Dan ini untuk php
 ![Screenshot 2025-02-22 202931](https://github.com/user-attachments/assets/f0ad28c3-19da-4c3d-8b03-5fbbc84172d6)
 
